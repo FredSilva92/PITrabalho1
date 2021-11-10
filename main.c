@@ -5,8 +5,9 @@
 void menuinicial();
 
 void main() {
-	char utilizador[15]
-	printf("\n \t --- Bem Vindo ao IPCA Games Arch! --- \n \t Introduza o seu nome de Utilizador: \n");
+	int ch;
+	char utilizador[15];
+	printf("\n \t --- Bem Vindo ao IPCA Games Arch! --- \n Introduza o seu nome de Utilizador: \n");
 	scanf(" % s", &utilizador);
 
 	//Tens de fazer o coiso de armazenar e criar os dados do utilizador
