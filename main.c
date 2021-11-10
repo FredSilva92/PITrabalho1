@@ -25,19 +25,19 @@ void menuinicial()
 	int opcao;
 	system("cls");
 	printf("Menu:\n\n");
-	printf("1. A tua Pontuação\n");
-	printf("2. Pontuações Globais\n");
-	printf("3. Adivinha o numero.\n");
-	printf("4. Adivinha a carta.\n");
-	printf("5. Vinte e um.\n");
-	printf("6. Jogo do Galo.\n");
-	printf("7. Jogo do Galo vs CPU.\n");
-	printf("8. Jogo da Forca.\n");
-	printf("9. Quatro em Linha.\n");
-	printf("10. Quatro em Linha vs CPU.\n");
+	printf("1.    A tua Pontuacao\n");
+	printf("2.    Pontuaoes Globais\n");
+	printf("3.    Adivinha o numero.\n");
+	printf("4.    Adivinha a carta.\n");
+	printf("5.    Vinte e um.\n");
+	printf("6.    Jogo do Galo.\n");
+	printf("7.    Jogo do Galo vs CPU.\n");
+	printf("8.    Jogo da Forca.\n");
+	printf("9.    Quatro em Linha.\n");
+	printf("10.   Quatro em Linha vs CPU.\n");
 
 
-	printf("0. Sair\n");
+	printf("0.    Sair\n");
 	scanf("%d", &opcao);
 
 	switch (opcao)
