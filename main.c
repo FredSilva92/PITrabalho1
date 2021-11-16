@@ -1,16 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h> 
 #include <stdbool.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include "files.h"
 
 void menuinicial();
 
+/*void saveFile(char name[]);
+
+struct FileStructure readFile(char game[]);*/
+
 void main() {
 	int ch;
-	char utilizador[15];
+	char utilizador[15] = "Fred";
+	int records;
 	printf("\n \t --- Bem Vindo ao IPCA Games Arch! --- \n Introduza o seu nome de Utilizador: \n");
-	scanf(" % s", &utilizador);
+	//scanf("%s", &utilizador);
 
-	//Tens de fazer o coiso de armazenar e criar os dados do utilizador
+    saveFile(utilizador);
+    int* scores = readFile("FourInLine", &records);
+
+	for(int i = 0; i < records; i++) {
+		printf("Val: %d\n", *scores);
+		scores++;
+	}
 
 	while ((ch = getchar()) != '\n' && ch != EOF); //para aparecer a mensagem e so passar qnd clica enter
 	printf("\n\nPressione Enter para continuar.");
