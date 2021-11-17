@@ -10,14 +10,14 @@ void menuinicial();
 
 /*void saveFile(char name[]);
 
-struct FileStructure readFile(char game[]);*/
+void menuinicial();
 
 void main() {
 	int ch;
-	char utilizador[15] = "Fred";
+	char utilizador[15];
 	int records;
 	printf("\n \t --- Bem Vindo ao IPCA Games Arch! --- \n Introduza o seu nome de Utilizador: \n");
-	//scanf("%s", &utilizador);
+	scanf("%s", &utilizador);
 
     saveFile(utilizador);
     int* scores = readFile("FourInLine", &records);

@@ -45,7 +45,7 @@ int* readFile(char game[], int *records) {
 
     while ((in_file = readdir(myDir))) {
         FILE* entry_file;
-        char buf[100];
+        char line[100];
 
         char* fileName = in_file->d_name;
 
@@ -68,9 +68,13 @@ int* readFile(char game[], int *records) {
             continue;
         }
 
-        while (fgets(buf, BUFSIZ, entry_file) != NULL)
+        while (fgets(line, BUFSIZ, entry_file) != NULL)
         {   
-            strtok(buf, " ");
+            char *name = strtok(line, " ");
+
+            if(!strcmp(game, name)) 
+                continue;
+
             char *point = strtok(NULL, " ");
 
             scoresToSave[size] = atoi(point);
