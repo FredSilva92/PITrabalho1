@@ -1,3 +1,3 @@
-void saveFile(char name[]);
+void createFile(char name[]);
 
 int* readFile(char game[], int *records);

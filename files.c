@@ -9,7 +9,7 @@
 #define MAX_SCORES 100
 #define FOLDER "leaderboard"
 
-void saveFile(char playerName[]) {
+void createFile(char playerName[]) {
     FILE *myFile;
     char folder[] = "/leaderboard/";
 
