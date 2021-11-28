@@ -29,16 +29,20 @@ struct deck { //structure to initilise deck of cards easier
 
 typedef struct deck Deck;
 //filled arrays which will be used to initilise deck
-char* strength[13] = { "Ace", "Deuce", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };
-char suit[4][20] = { "Clubs", "Diamonds", "Hearts", "Spades" };
+char* strength[13] = { "As", "Dois", "Tres", "Quatro", "Cinco", "Seis", "Sete", "Oito", "Nove", "Dez", "Valete", "Dama", "Rei" };
+char suit[4][20] = { "Paus", "Ouros", "Copas", "Espadas" };
 
 void randomiseDeck(Deck[]); //used to shuffle the deck
 Deck deck[52] = { "", "" }; 
 
 void main() {
-
-	printf("****Welcome to BlackJack****\n");
-	printf("Type the corresponding Number to contuine\n");
+	system("cls"); 
+    printf("# # # # # # # # # # # # # # # # # # # #\n");
+    printf("#                                     #\n");
+	printf("#              VINTE E UM             #\n");
+	printf("#                                     #\n");
+	printf("# # # # # # # # # # # # # # # # # # # #\n");
+	printf("\n         Escolha uma opcao:\n");
 
 	initialiseDeck(); //making deck
 	randomiseDeck(deck); //shuffling
@@ -50,15 +54,15 @@ void main() {
 void menuOne()
 {
 
-	printf("1: Start Game\n");
-	printf("2: Voltar ao Menu\n"); 
+	printf("1:              JOGAR\n");
+	printf("2:         Voltar ao Menu\n"); 
 
 	int option;
 	scanf("%d", &option);
 
 	switch (option)
 	{
-	case 1:
+	case 1: 
 		singlePlayerGame();
 		break;
 
@@ -75,30 +79,36 @@ void menuOne()
 
 void singlePlayerGame()
 {
-
+system("cls"); 
 
 	cardsDrawn = 0;
 	playerOnePoints = 0;
 	dealerPoints = 0;
 	dealerCardRevealed = 0;
 
-	printf("****Instrucoes****\n");
-	printf("1.  Pedir\n");
-	printf("2. Ficar\n");
-	printf("****Instrucoes****\n\n");
+    printf("# # # # # # # # # # # # # # # # # # # #\n");
+    printf("#                                     #\n");
+    printf("#             INSTRUCOES              #\n");
+	printf("#        1 ---->  PEDIR CARTA         #\n");
+	printf("#        2 ---->  FICAR               #\n");
+	printf("#                                     #\n");
+	printf("# # # # # # # # # # # # # # # # # # # #\n");
 
-	printf("Dealer has drawn \n");
+	printf("\n      Dealer Distribui as Cartas \n     ............................\n ");
+	
 	activePlayer = 0;
+	
+	printf("\n             Dealer tem:  \n\n ");
 	displayDeck(); //card 0
 	defineStrength();
 	cardsDrawn++; //cards drawn = 1
-	printf("Face-Down Card\n");
-	printf("Dealer has %d points shown\n\n", dealerPoints);
+	printf("       Carta Virada para Baixo\n");
+	printf("\n     Dealer tem %d pontos visiveis\n     ............................\n", dealerPoints);
 	defineStrength();
 	cardsDrawn++; //cards drawn = 2
 	
 
-	printf("Player One has: \n");
+	printf("\n            JOGARDOR tem:  \n\n ");  //ERA BOM CONSEGUIR POR AQUI O NOME DO JOGADOR
 	activePlayer = 1;
 	displayDeck(); // card 2
 	defineStrength();
@@ -106,18 +116,18 @@ void singlePlayerGame()
 
 
 
-	printf("You have %d points\n\n", playerOnePoints);
+	printf("         JOGADOR tem %d pontos \n     ............................\n", playerOnePoints);
 
 	if (dealerPoints == 21 && playerOnePoints == 21) {
-		printf("Dealer reveals BlackJack and it is a tie\n");
+		printf("  Dealer Mostra Vinte e Um e o jogo empata!\n");
 		restartSinglePlayerGame();
 	}
 	else if (dealerPoints == 21) {
-		printf("Dealer reveals BlackJack and wins\n");
+		printf("Dealer mostra Vinte e Um e o JOGADOR perde!\n");
 		restartSinglePlayerGame();
 	}
 	else if (playerOnePoints == 21) {
-		printf("Player One wins with BlackJack\n");
+		printf("   JOGADOR Ganha com Vinte e Um\n");
 		restartSinglePlayerGame();
 	}
 
@@ -130,7 +140,7 @@ void playerChoice()
 {
 	int option;
 	
-		printf("It is your turn\n");
+		printf("\n        Deseja PEDIR ou FICAR?\n");
 		scanf("%d", &option);
 		
 	switch (option) {
@@ -150,85 +160,85 @@ void playerChoice()
 void defineStrength()
 {
 	if (activePlayer == 0) {
-		if (strcmp(deck[cardsDrawn].strength, "Deuce") == 0) {
+		if (strcmp(deck[cardsDrawn].strength, "Dois") == 0) {
 			dealerPoints += 2;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Three") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Tres") == 0) {
 			dealerPoints += 3;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Four") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Quatro") == 0) {
 			dealerPoints += 4;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Five") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Cinco") == 0) {
 			dealerPoints += 5;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Six") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Seis") == 0) {
 			dealerPoints += 6;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Seven") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Sete") == 0) {
 			dealerPoints += 7;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Eight") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Oito") == 0) {
 			dealerPoints += 8;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Nine") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Nove") == 0) {
 			dealerPoints += 9;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Ten") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Dez") == 0) {
 			dealerPoints += 10;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Jack") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Valete") == 0) {
 			dealerPoints += 10;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Queen") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Dama") == 0) {
 			dealerPoints += 10;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "King") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Rei") == 0) {
 			dealerPoints += 10;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Ace") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "As") == 0) {
 			dealerPoints += 1;
 
 		}
 	}
 	else if (activePlayer == 1) {
-		if (strcmp(deck[cardsDrawn].strength, "Deuce") == 0) {
+		if (strcmp(deck[cardsDrawn].strength, "Dois") == 0) {
 			playerOnePoints += 2;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Three") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Tres") == 0) {
 			playerOnePoints += 3;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Four") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Quatro") == 0) {
 			playerOnePoints += 4;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Five") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Cinco") == 0) {
 			playerOnePoints += 5;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Six") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Seis") == 0) {
 			playerOnePoints += 6;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Seven") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Sete") == 0) {
 			playerOnePoints += 7;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Eight") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Oito") == 0) {
 			playerOnePoints += 8;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Nine") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Nove") == 0) {
 			playerOnePoints += 9;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Ten") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Dez") == 0) {
 			playerOnePoints += 10;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Jack") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Valete") == 0) {
 			playerOnePoints += 10;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Queen") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Dama") == 0) {
 			playerOnePoints += 10;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "King") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "Rei") == 0) {
 			playerOnePoints += 10;
 		}
-		else if (strcmp(deck[cardsDrawn].strength, "Ace") == 0) {
+		else if (strcmp(deck[cardsDrawn].strength, "As") == 0) {
 			playerOnePoints += 1;
 		}
 	}
@@ -239,8 +249,8 @@ void restartSinglePlayerGame()
 	int option;
 
 	randomiseDeck(deck);
-	printf("\n1. Another game\n");
-	printf("2. Main Menu\n");
+	printf("\n1.         Jogar Novamente\n");
+	printf("2.         Menu Principal\n");
 	scanf("%d", &option);
 
 	switch (option)
@@ -248,7 +258,7 @@ void restartSinglePlayerGame()
 	case 1:
 		singlePlayerGame();
 		break;
-	case 2:
+	case 2: 
 		menuOne();
 	default:
 		singlePlayerGame();
@@ -261,8 +271,8 @@ void dealerTurn()
 	activePlayer = 0;
 
 	if (dealerCardRevealed == 0) {
-		printf("Dealer reveals : ");
-		printf("%5s of %-12s\n", deck[1].strength, deck[1].suit);
+		printf("\n      Dealer mostra a sua carta:\n");
+		printf("\n            %s de %s\n\n", deck[1].strength, deck[1].suit);
 		dealerCardRevealed = 1;
 	}
 
@@ -272,13 +282,13 @@ void dealerTurn()
 	
 
 	else if (dealerPoints > 21) {
-			printf("Dealer goes Bust, you win with : %d\n", playerOnePoints);
+			printf("Dealer rebentou, JOGADOR ganha com : %d pontos!\n     ............................\n", playerOnePoints);
 			restartSinglePlayerGame();
 					//ADICIONAR PONTOS
 
 	}
 	else if (dealerPoints > playerOnePoints){
-			printf("Dealer Wins with: %d\n", dealerPoints);
+			printf("     Dealer ganha com: %d pontos!\n     ............................\n", dealerPoints);
 			restartSinglePlayerGame();
 						//RETIRAR PONTOS
 
@@ -288,8 +298,8 @@ void dealerTurn()
 
 void dealerHit()
 {
-	printf("Dealer has : %d\n", dealerPoints);
-	printf("Dealer has drawn\n");
+	printf("      Dealer tem : %d pontos!\n\n     ............................\n\n", dealerPoints);
+	printf("     Dealer Retira Outra Carta\n\n");
 	displayDeck();
 	defineStrength();
 	cardsDrawn++;
@@ -304,7 +314,7 @@ void dealerHit()
 
 void stand()
 {
-		printf("You choose to stand, your final score for the round is : %d\n", playerOnePoints);
+		printf("       JOGADOR escolheu ficar!\n\n    JOGADOR ficou com : %d pontos!\n     ............................\n", playerOnePoints);
 		dealerTurn();
 }
 
@@ -313,10 +323,10 @@ void hit()
 		displayDeck();
 		defineStrength();
 		cardsDrawn++;
-		printf("You have %d points\n\n", playerOnePoints);
+		printf("         JOGADOR tem %d pontos \n     ............................\n", playerOnePoints);
 
 		if (playerOnePoints > 21) {
-			printf("You have bust, Dealer wins\n");
+			printf("\n\n   O JOGADOR rebentou, Dealer Ganha!\n\n     ............................\n");
 			restartSinglePlayerGame();
 		}
 		else if (playerOnePoints == 21) {
@@ -329,7 +339,7 @@ void hit()
 }
 
 void displayDeck() {
-	printf("%5s of %-12s\n", deck[cardsDrawn].strength, deck[cardsDrawn].suit);
+	printf("           %s de %s\n\n", deck[cardsDrawn].strength, deck[cardsDrawn].suit);
 }
 
 void randomiseDeck(Deck deck[])
