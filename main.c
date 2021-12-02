@@ -25,7 +25,6 @@ void main() {
 	printf("\n \t --- Bem Vindo ao IPCA Games Arch! --- \n Introduza o seu nome de Utilizador: \n");
 	scanf("%s", &utilizador);
 
-    createFile(utilizador);
     //int* scores = readFile("FourInLine", &records);
 
 
@@ -58,7 +57,7 @@ void main() {
 	case 8:;
 		break;
 	case 9:
-		fourInLine();
+		fourInLine(utilizador);
 		break;
 	case 10:;
 		break;
@@ -90,7 +89,7 @@ void menuinicial()
 	printf("0.    Sair\n");
 }
 
-struct Option* getOptions() {
+void setOptions() {
 	struct Option options[TOTAL_OPTIONS];
 	
 	FILE *file = fopen("/resources/MenuOptions.txt", "r");
@@ -115,6 +114,4 @@ struct Option* getOptions() {
 	}
 
 	fclose(file);
-
-	return options;
 }

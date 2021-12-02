@@ -1,1 +1,1 @@
-void fourInLine();
+void fourInLine(char playerName[]);

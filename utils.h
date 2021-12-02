@@ -1,4 +1,1 @@
-struct Option {
-    char* name;
-    char* menuEntrance;
-};
+void pressEnter();
