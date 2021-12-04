@@ -5,61 +5,51 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "files.h"
+#include "utils.h"
 #include "games.h"
 
 #define TOTAL_OPTIONS 11
 
-struct Option {
-    char* name;
-    char* menuEntrance;
-};
-
-void menuinicial();
-
-struct Option* getOptions();
+void mainMenu();
 
 void main() {
 	int ch;
-	char utilizador[15];
+	char user[NAMES_SIZE];
 	int records;
 	printf("\n \t --- Bem Vindo ao IPCA Games Arch! --- \n Introduza o seu nome de Utilizador: \n");
-	scanf("%s", &utilizador);
+	scanf("%s", user);
 
-    //int* scores = readFile("FourInLine", &records);
-
-
-	while ((ch = getchar()) != '\n' && ch != EOF); //para aparecer a mensagem e so passar qnd clica enter
-	printf("\n\nPressione Enter para continuar.");
-	while ((ch = getchar()) != '\n' && ch != EOF);
+	pressEnter();
 	system("cls"); 
-	menuinicial();
+	mainMenu();
 
-	int opcao = 9;
+	int option = 9;
 
-	scanf("%d", &opcao);
+	scanf("%d", &option);
 
-	switch (opcao)
+	switch (option)
 	{
 	case 1:;   
 		break;
-	case 2:;		
+	case 2:
+		setPlayerPoints(user);		
 		break;
-	case 3:; 
+	case 3:
+		guessNumber(user); 
 		break;
 	case 4:;
 		break;
 	case 5:;
 		break;
-	case 6:;
+	case 6:
+		ticTacToe(user);
 		break;
 	case 7:;
 		break;
 	case 8:;
 		break;
 	case 9:
-		fourInLine(utilizador);
-		break;
-	case 10:;
+		connected4(user);
 		break;
 	case 0: printf("A Fechar Programa!\n");
 		exit(1);
@@ -70,7 +60,7 @@ void main() {
 	}
 }
 
-void menuinicial()
+void mainMenu()
 {
 	system("cls");
 	printf("Menu:\n\n");
@@ -83,35 +73,7 @@ void menuinicial()
 	printf("7.    Jogo do Galo vs CPU.\n");
 	printf("8.    Jogo da Forca.\n");
 	printf("9.    Quatro em Linha.\n");
-	printf("10.   Quatro em Linha vs CPU.\n");
 
 
 	printf("0.    Sair\n");
-}
-
-void setOptions() {
-	struct Option options[TOTAL_OPTIONS];
-	
-	FILE *file = fopen("/resources/MenuOptions.txt", "r");
-
-	if(file == NULL) {
-		perror("File not found");
-		exit(1);
-	}
-
-	char line[100];
-	int i = 0;
-
-	while (fgets(line, BUFSIZ, file) != NULL)
-	{
-		char *name = strtok(line, ";");
-		char *menuEntrance = strtok(NULL, ";");
-
-		options[i].name = name;
-		options[i].menuEntrance = menuEntrance;
-		
-		i++;
-	}
-
-	fclose(file);
 }

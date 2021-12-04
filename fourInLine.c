@@ -22,62 +22,61 @@ int columToWin[COLUMS];
 int isComputer;
 struct Player
 {
-    char* name;
+    char name[15];
     char disk;
     int score;
 };
 
-void board();
+void boardC4();
 void play(struct Player* currentPlayer);
 void fillColumn(char currentDisk, int columnNumber);
 int check(char currentDisk);
 void playComputer(struct Player* currentPlayer);
 void saveColumnsToWin(int column);
 void setColumsToWin();
-void initGame(int *gameMode);
+void initGame(char *gameMode);
 void initScores();
 int generateRandomInt(int min, int max);
-int gameMenu();
-void createPlayers(char playerName[], struct Player players[], int gameMode);
-void game(char playerName[]);
+void createPlayers(char playerName[], struct Player players[], char gameMode);
+void startConnected4(char playerName[]);
 void endGame(struct Player* winner, struct Player players[], int *playAgain);
 
-void fourInLine(char playerName[]) {
+void connected4(char playerName[]) {
     char choice = ' ';
 
     while(1) {
 
-        printf("1. Jogar\n");
-        printf("2. Ver pontuações\n");
+        gameMenu();
 
         scanf(" %c", &choice);
         
         if (choice == '1') {
-            game(playerName);
+            startConnected4(playerName);
             break;
         } else if (choice == '2') {
-            struct Record gameRecords[10];
-            setGamePoints(playerName, gameRecords);
+            setGamePoints(CONNECTED4);
             break;
         }
 
-        printf("Opção errada! Volte a tentar!");
-    }
-
-    
+        wrongOption();
+    }  
 }
 
-void game(char playerName[]) {
+void startConnected4(char playerName[]) {
 
     char currentDisk;
-    int gameMode;
+    char gameMode;
     int playAgain;
 
-    struct Player* currentPlayer;
-    struct Player players[2];
+    
+    struct Player* players = malloc(2 * sizeof(struct Player));
     
     initGame(&gameMode);
     createPlayers(playerName, players, gameMode);
+
+    system("clear || cls");
+
+    struct Player* currentPlayer;
 
     currentPlayer = &players[0];
 
@@ -115,9 +114,11 @@ void game(char playerName[]) {
         }        
     }
 
+    free(currentPlayer);
+    free(players);
 }
 
-void board() {
+void boardC4() {
 
     printf("%s\n", HEADER);
     printf("%s\n", SPLITTER);
@@ -141,12 +142,14 @@ void play(struct Player* currentPlayer) {
     int columnNumber;
     char chosen;
     
-    board();
+    boardC4();
     printf("%s, é tua vez!\n", currentPlayer->name);
     printf("\nEscolher coluna: ");
-    scanf("%c", &chosen);
+    
 
     while(1) {
+
+        scanf(" %c", &chosen);
 
         switch(chosen)
         {
@@ -174,7 +177,7 @@ void play(struct Player* currentPlayer) {
             default:
                 //columnNumber = -1;
                 printf("\nColuna errada! Tenta outra vez\n\n");
-                board();
+                boardC4();
         }
         // break out of while loop if the right letter was chosen:
         if ((columnNumber >= 0 && columnNumber <= 6) && (scores[0][columnNumber] == 0))
@@ -202,9 +205,8 @@ void playComputer(struct Player* currentPlayer) {
         chances++;
     }
 
-    board();
+    boardC4();
     printf("Computador a jogar.\n");
-
 
 	pressEnter();
 
@@ -246,8 +248,6 @@ void fillColumn(char currentDisk, int columnNumber) {
 }
 
 int check(char currentDisk) {
-
-    // check rows
 
     for (int i = 0; i < ROWS; i++)
     {
@@ -373,8 +373,6 @@ int check(char currentDisk) {
             diagLeftColums++;
         } 
 
-        // Diagonal right
-
         if (diagRightRows == 5 && diagRightColumns == 6) {
             diagRightColumns++;
         } else if (diagRightRows < 5) {
@@ -410,7 +408,7 @@ int generateRandomInt(int min, int max) {
     return min + rand() % (max - min);
 }
 
-void initGame(int *gameMode) {
+void initGame(char *gameMode) {
     initScores(); 
     setColumsToWin();
     
@@ -419,12 +417,12 @@ void initGame(int *gameMode) {
     printf("2. vs cpu\n");
 
     while(1) {
-        scanf(" %d", gameMode);
+        scanf(" %c", gameMode);
 
-        if (*gameMode == 2) {
+        if (*gameMode == '2') {
             isComputer = 1;
             break;
-        } else if (*gameMode == 1) {
+        } else if (*gameMode == '1') {
             break;
         }
     }
@@ -440,36 +438,44 @@ void initScores() {
     }
 }
 
-void createPlayers(char playerName[], struct Player players[], int gameMode) {
-    char* player2Name;
+void createPlayers(char playerName[], struct Player* players, char gameMode) {
+    char player2Name[15];
 
-    if (gameMode == 2) {
-        player2Name = COMPUTER_NAME;
+    if (gameMode == '2') {
+        strcpy(player2Name, COMPUTER_NAME);
     } else {
         printf("Nome do jogador 2: \n");
-        scanf("%s", &player2Name);
+        scanf("%s", player2Name);
     }
 
-    struct Player player1;
-    struct Player player2;
+    /*player1->name = playerName;
+    player1->disk = DISK1;
+    player1->score = 0;
 
-    player1.name = playerName;
-    player1.disk = DISK1;
-    player1.score = 0;
+    player2->name = player2Name;
+    player2->disk = DISK2;
+    player2->score = 0;*/
 
-    player2.name = player2Name;
-    player2.disk = DISK2;
-    player2.score = 0;
+    players[0].disk = malloc(sizeof(char));
+    players[0].score = malloc(sizeof(int));
 
-    players[0] = player1;
-    players[1] = player2;
+    players[1].disk = malloc(sizeof(char));
+    players[1].score = malloc(sizeof(int));
+
+    strcpy(players[0].name, playerName);
+    players[0].disk = DISK1;
+    players[0].score = 0;
+
+    strcpy(players[1].name, player2Name);
+    players[1].disk = DISK2;
+    players[1].score = 0;
 }
 
 void endGame(struct Player* winner, struct Player players[], int *playAgain) {
-    struct Player* looser;
+    struct Player* looser = malloc(sizeof(struct Player));
 
 
-    if (strcmp(winner->name, players[0].name)) {
+    if (strcmp(winner->name, players[0].name) == 0) {
         looser = &players[1];
     } else {
         looser = &players[0];
@@ -482,7 +488,9 @@ void endGame(struct Player* winner, struct Player players[], int *playAgain) {
         looser->score = 0;
     }
 
-    printf("%s ganhou! Parabéns!\n", winner->name);
+    char* nameToDisplay = strcmp(winner->name, COMPUTER_NAME) == 0 ? "Computer" : winner->name;
+
+    printf("%s ganhou! Parabéns!\n", nameToDisplay);
     pressEnter();
 
     while(1) {
@@ -497,19 +505,19 @@ void endGame(struct Player* winner, struct Player players[], int *playAgain) {
     }
 
     if (*playAgain == 2) {
-        if(!strcmp(winner->name, COMPUTER_NAME)) {
-            saveFile(winner->name, "fourInLine", winner->score);
+
+        char* winnerName = winner->name;
+
+        if(strcmp(winnerName, COMPUTER_NAME) != 0) {
+            saveFile(winnerName, CONNECTED4, winner->score);
         }
 
-        if(!strcmp(looser->name, COMPUTER_NAME)) {
-            saveFile(looser->name, "fourInLine", looser->score);
+        char* looserName = looser->name;
+
+        if(strcmp(looserName, COMPUTER_NAME) != 0) {
+            saveFile(looserName, CONNECTED4, looser->score);
         }
 
         printf("\n\nObrigado por jogares o quatro em linha :)\n");
     }
-
-}
-
-int gameMenu() {
-
 }
