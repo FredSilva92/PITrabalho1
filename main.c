@@ -5,98 +5,51 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "files.h"
+#include "utils.h"
+#include "games.h"
 
-void menuinicial();
-//void saveFile(char name[]);
+#define TOTAL_OPTIONS 11
 
+void mainMenu();
 
 void main() {
-	int ch, i, j;
-	char utilizador[15];
+	int ch;
+	char user[NAMES_SIZE];
 	int records;
-	
-	for (i = 1; i <= 12; i++) {
-        for ( j = 1; j <= 20; j++) {
-            if (i==5 && j==1){
-            printf("#           IPCA GAMES ARCH           #");	}
-			else if (i==8 && j==1){
-            printf("#     INSIRA O SEU NOME DE JOGADOR    #");	}		
-            else if (i == 1 || i == 12 || j == 1 || (j == 20 && i != 5 && i != 8 )){
-                printf("# ");}
-			
-    		else{
-                printf("  ");
-            }
-        }
+	printf("\n \t --- Bem Vindo ao IPCA Games Arch! --- \n Introduza o seu nome de Utilizador: \n");
+	scanf("%s", user);
 
-        printf("\n");
-    }
-    
-    printf("\n\n                ");
-    
-	scanf("%s", &utilizador);
-
-   /* saveFile(utilizador);
-      int* scores = readFile("FourInLine", &records);
-
-	for(i = 0; i < records; i++) {
-		printf("Val: %d\n", *scores);
-		scores++;
-	}*/
-
-	while ((ch = getchar()) != '\n' && ch != EOF); //para aparecer a mensagem e so passar qnd clica enter
-	printf("\n\n     Pressione Enter para continuar.");
-	while ((ch = getchar()) != '\n' && ch != EOF);
+	pressEnter();
 	system("cls"); 
-	menuinicial();
-}
+	mainMenu();
 
+	int option = 9;
 
-void menuinicial()
-{
-	int opcao;
-	system("cls");
-	printf("# # # # # # # # # # # # # # # # # # # #\n");
-	printf("#                                     #\n");
-	printf("#           IPCA GAMES ARCH           #\n");
-	printf("#                                     #\n");
-	printf("#    1.       A tua Pontuacao         #\n");
-	printf("#    2.     Pontuacoes Globais        #\n");
-	printf("#     3.     Adivinha o numero        #\n");
-	printf("#     4.      Adivinha a carta        #\n");
-	printf("#     5.         Vinte e um           #\n");
-	printf("#     6.        Jogo do Galo          #\n");
-	printf("#     7.     Jogo do Galo vs CPU      #\n");
-	printf("#     8.       Jogo da Forca          #\n");
-	printf("#     9.      Quatro em Linha         #\n");
-	printf("#    10.   Quatro em Linha vs CPU     #\n");
-	printf("#     0.            Sair              #\n");
-	printf("#                                     #\n"); 
-	printf("# # # # # # # # # # # # # # # # # # # #\n");
-	
-	scanf("%d", &opcao);
+	scanf("%d", &option);
 
-	switch (opcao)
+	switch (option)
 	{
 	case 1:;   
 		break;
-	case 2:;		
+	case 2:
+		setPlayerPoints(user);		
 		break;
-	case 3:; 
+	case 3:
+		guessNumber(user); 
 		break;
 	case 4:;
 		break;
 	case 5:;
 		break;
-	case 6:;
+	case 6:
+		ticTacToe(user);
 		break;
 	case 7:;
 		break;
 	case 8:;
 		break;
-	case 9:;
-		break;
-	case 10:;
+	case 9:
+		connected4(user);
 		break;
 	case 0: printf("A Fechar Programa!\n");
 		exit(1);
@@ -107,3 +60,20 @@ void menuinicial()
 	}
 }
 
+void mainMenu()
+{
+	system("cls");
+	printf("Menu:\n\n");
+	printf("1.    A tua Pontuacao\n");
+	printf("2.    Pontuaoes Globais\n");
+	printf("3.    Adivinha o numero.\n");
+	printf("4.    Adivinha a carta.\n");
+	printf("5.    Vinte e um.\n");
+	printf("6.    Jogo do Galo.\n");
+	printf("7.    Jogo do Galo vs CPU.\n");
+	printf("8.    Jogo da Forca.\n");
+	printf("9.    Quatro em Linha.\n");
+
+
+	printf("0.    Sair\n");
+}

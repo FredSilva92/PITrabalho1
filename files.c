@@ -5,88 +5,164 @@
 #include <sys/stat.h>
 #include <dirent.h>
 #include "files.h"
+#include "utils.h"
 
-#define MAX_SCORES 100
 #define FOLDER "leaderboard"
 
-void saveFile(char playerName[]) {
-    FILE *myFile;
-    char folder[] = "/leaderboard/";
+void sortRecords(int totalRecords, struct Record records[]);
+void setGameNameToDisplay(char* nameToDisplay, char* gameName);
+void noResults();
 
+int readFile(int *totalRecords, struct Record* records) {
+    int size = 0;
+    FILE* myFile;
     char path[100] = FOLDER;
 
-    strcat(path, "/");
-    strcat(path, playerName);
-    strcat(path, ".txt");
+    strcat(path, "/records.txt");
+
+    myFile = fopen(path, "r");
+
+    if (myFile == NULL)
+    {
+        printf("Error : Failed to open file - \n");
+        exit(1);
+    }
+
+    while(fscanf(myFile, "%s %s %s", records[size].player, records[size].game, records[size].score) != EOF) {
+        size++;
+    };
+
+    fclose(myFile);
+    
+    *totalRecords = size;
+    
+    return 0;
+}
+
+void saveFile(char playerName[], char gameName[], int score) {
+    FILE *myFile;
+    char path[100] = FOLDER;
+
+    strcat(path, "/records.txt");
 
     mkdir(FOLDER, 0777);
 
-    myFile = fopen(path, "ab");
+    myFile = fopen(path, "a");
+
+    if(myFile == NULL) {
+        perror("Not possible to open file");
+        exit(1);
+    }
+
+    char* lineToWrite;
+
+    if (ftell(myFile) == 0) {
+        lineToWrite = "%s %s %d";
+    } else {
+        lineToWrite = "\n%s %s %d";
+    }
+
+    fprintf(myFile, lineToWrite, playerName, gameName, score);
 
     fclose(myFile);
 }
 
-int* readFile(char game[], int *records) {
+void setPlayerPoints(char playerName[]) {
+    struct Record* recordsToSet = malloc(100 * sizeof(struct Record));
+    struct Record* recordsToSend = malloc(100 * sizeof(struct Record));;
 
-    DIR* myDir;
-    struct dirent* in_file;
-    
-    int scoresToSave[MAX_SCORES];
+    int totalRecords;
 
-    if (NULL == (myDir = opendir("leaderboard/"))) 
-    {
-        printf("Error : Failed to open input directory \n");
-        return NULL;
+    readFile(&totalRecords, recordsToSet);
+
+    int recordsIndex = 0;
+
+    for(int i = 0; i < totalRecords; i++) {
+        if (strcmp(recordsToSet[i].player, playerName) == 0) {
+            recordsToSend[recordsIndex] = recordsToSet[i];
+            recordsIndex++;
+        }
+    }
+
+    sortRecords(totalRecords, recordsToSend);
+
+    for(int i = 0; i < RECORDS_TO_SHOW; i++) {
+        if (recordsToSend[i].game[0] == '\0') {
+            if (i == 0) {
+                noResults();
+            }
+            break;
+        }
+
+        char nameToDisplay[30];
+
+        setGameNameToDisplay(nameToDisplay, recordsToSend[i].game);
+
+        printf("%s %s\n", nameToDisplay, recordsToSend[i].score);
+    }
+
+    free(recordsToSet);
+    free(recordsToSend);
+}
+
+void setGamePoints(char gameName[]) {
+    struct Record* recordsToSet = malloc(100 * sizeof(struct Record));
+    struct Record* recordsToSend = malloc(100 * sizeof(struct Record));
+
+    int totalRecords;
+
+    readFile(&totalRecords, recordsToSet);
+
+    int recordsIndex = 0;
+
+    for(int i = 0; i < totalRecords; i++) {
+        if (strcmp(recordsToSet[i].game, gameName) == 0) {
+            recordsToSend[recordsIndex] = recordsToSet[i];
+            recordsIndex++;
+        }
+    }
+
+    sortRecords(totalRecords, recordsToSend);
+
+    for(int i = 0; i < RECORDS_TO_SHOW; i++) {
+        if (recordsToSend[i].player[0] == '\0') {
+            if (i == 0) {
+                noResults();
+            }
+            break;
+        }
+
+        printf("%s %s\n", recordsToSend[i].player, recordsToSend[i].score);
+    }
+
+    free(recordsToSet);
+    free(recordsToSend);
+}
+
+void sortRecords(int totalRecords, struct Record* records) {
+    for (int i = 0; i < totalRecords; i++) {
+        int prevScore = atoi(records[i].score);
+        for (int j = i + 1; j < totalRecords; j++) {
+            
+            int nextScore = atoi(records[j].score);
+
+            if (nextScore > prevScore) {
+                struct Record tmp = records[i];
+                records[i] = records[j];
+                records[j] = tmp;
+            }
+        }
+    }
+}
+
+void setGameNameToDisplay(char* nameToDisplay, char* gameName) {
+    if (strcmp(gameName, CONNECTED4) == 0) {
+        strcpy(nameToDisplay, "Quatro em linha");
     } else {
-        printf("Dir name: \n");
+        strcpy(nameToDisplay, gameName);
     }
+}
 
-    int size = 0;
-
-    while ((in_file = readdir(myDir))) {
-        FILE* entry_file;
-        char line[100];
-
-        char* fileName = in_file->d_name;
-
-        if (!strcmp(fileName, ".") || !strcmp(fileName, ".."))
-            continue;
-        
-        char path[100] = FOLDER;
-
-        strcat(path, "/");
-        strcat(path, fileName);
-
-        printf("File name: %s\n", fileName);
-
-        entry_file = fopen(path, "r");
-
-        if (entry_file == NULL)
-        {
-            printf("Error : Failed to open entry file - \n");
-
-            continue;
-        }
-
-        while (fgets(line, BUFSIZ, entry_file) != NULL)
-        {   
-            char *name = strtok(line, " ");
-
-            if(!strcmp(game, name)) 
-                continue;
-
-            char *point = strtok(NULL, " ");
-
-            scoresToSave[size] = atoi(point);
-
-            size++;
-        }
-
-        /* When you finish with the file, close it */
-        fclose(entry_file);
-    }
-
-    *records = size;
-    
-    return scoresToSave;
-};
+void noResults() {
+    printf("Sem resultados para mostrar");
+}
