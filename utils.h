@@ -2,6 +2,8 @@
 #define GUESS_NUMBER "guessNumber"
 #define TIC_TAC_TOE "ticTacToe"
 #define BLACKJACK "blackjack"
+#define FORCA "forca"
+
 #define NAMES_SIZE 30
 
 void pressEnter();

@@ -49,7 +49,8 @@ void main() {
 	case 7:
 		ticTacToeCpu(user);
 		break;
-	case 8:;
+	case 8:
+		forca(user);
 		break;
 	case 9:
 		connected4(user);

@@ -8,4 +8,6 @@ void ticTacToeCpu(char playerName[]);
 
 void guessCard(char playerName[]);
 
+void forca(char playerName[]);
+
 void connected4(char playerName[]);
