@@ -38,7 +38,8 @@ void main() {
 	case 3:
 		guessNumber(user); 
 		break;
-	case 4:;
+	case 4:
+		guessCard(user);
 		break;
 	case 5:
 		blackjack(user);

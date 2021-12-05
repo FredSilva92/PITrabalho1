@@ -477,7 +477,7 @@ void endGame(struct Player* winner, struct Player players[], int *playAgain) {
         looser->score = 0;
     }
 
-    char* nameToDisplay = strcmp(winner->name, COMPUTER_NAME) == 0 ? "Computer" : winner->name;
+    char* nameToDisplay = strcmp(winner->name, COMPUTER_NAME) == 0 ? "Computador" : winner->name;
 
     printf("%s ganhou! Parabéns!\n", nameToDisplay);
     pressEnter();

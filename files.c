@@ -186,7 +186,9 @@ void setGameNameToDisplay(char* nameToDisplay, char* gameName) {
         strcpy(nameToDisplay, "Jogo do galo");
     } else if (strcmp(gameName, GUESS_NUMBER) == 0) {
         strcpy(nameToDisplay, "Adivinha o numero");
-    } else if (strcmp(gameName, CONNECTED4) == 0) {
+    } else if (strcmp(gameName, GUESS_CARD) == 0) {
+        strcpy(nameToDisplay, "Adivinha a carta");
+    }else if (strcmp(gameName, CONNECTED4) == 0) {
         strcpy(nameToDisplay, "Quatro em linha");
     } else {
         strcpy(nameToDisplay, gameName);
