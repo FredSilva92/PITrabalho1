@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#ifdef _WIN32
-	#include<conio.h>
-#endif
 #include "games.h"
 #include "files.h"
 #include "utils.h"
