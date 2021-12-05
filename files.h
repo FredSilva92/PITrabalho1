@@ -18,3 +18,5 @@ void saveFile(char playerName[], char gameName[], int score);
 void setPlayerPoints(char gameName[]);
 
 void setGamePoints(char playerName[]);
+
+void setGlobalPoints();

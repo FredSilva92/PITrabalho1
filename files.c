@@ -98,7 +98,7 @@ void setPlayerPoints(char playerName[]) {
 
         setGameNameToDisplay(nameToDisplay, recordsToSend[i].game);
 
-        printf("%s %s\n", nameToDisplay, recordsToSend[i].score);
+        printf("%s  ->  %s\n", nameToDisplay, recordsToSend[i].score);
     }
 
     free(recordsToSet);
@@ -132,11 +132,35 @@ void setGamePoints(char gameName[]) {
             break;
         }
 
-        printf("%s %s\n", recordsToSend[i].player, recordsToSend[i].score);
+        printf("%s  ->  %s\n", recordsToSend[i].player, recordsToSend[i].score);
     }
 
     free(recordsToSet);
     free(recordsToSend);
+}
+
+void setGlobalPoints() {
+    struct Record* records = malloc(100 * sizeof(struct Record));
+
+    int totalRecords;
+
+    readFile(&totalRecords, records);
+
+    sortRecords(totalRecords, records);
+
+    for(int i = 0; i < RECORDS_TO_SHOW; i++) {
+        if (records[i].player[0] == '\0') {
+            if (i == 0) {
+                noResults();
+            }
+            break;
+        }
+
+        char nameToDisplay[30];
+
+        setGameNameToDisplay(nameToDisplay, records[i].game);
+        printf("%s  ->  %s  ->  %s\n", records[i].player, nameToDisplay, records[i].score);
+    }
 }
 
 void sortRecords(int totalRecords, struct Record* records) {
@@ -156,7 +180,13 @@ void sortRecords(int totalRecords, struct Record* records) {
 }
 
 void setGameNameToDisplay(char* nameToDisplay, char* gameName) {
-    if (strcmp(gameName, CONNECTED4) == 0) {
+    if (strcmp(gameName, BLACKJACK) == 0) {
+        strcpy(nameToDisplay, "Vinte e um");
+    } else if (strcmp(gameName, TIC_TAC_TOE) == 0) {
+        strcpy(nameToDisplay, "Jogo do galo");
+    } else if (strcmp(gameName, GUESS_NUMBER) == 0) {
+        strcpy(nameToDisplay, "Adivinha o numero");
+    } else if (strcmp(gameName, CONNECTED4) == 0) {
         strcpy(nameToDisplay, "Quatro em linha");
     } else {
         strcpy(nameToDisplay, gameName);

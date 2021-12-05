@@ -29,22 +29,25 @@ void main() {
 
 	switch (option)
 	{
-	case 1:;   
+	case 1:
+		setPlayerPoints(user);   
 		break;
 	case 2:
-		setPlayerPoints(user);		
+		setGlobalPoints();
 		break;
 	case 3:
 		guessNumber(user); 
 		break;
 	case 4:;
 		break;
-	case 5:;
+	case 5:
+		blackjack(user);
 		break;
 	case 6:
 		ticTacToe(user);
 		break;
-	case 7:;
+	case 7:
+		ticTacToeCpu(user);
 		break;
 	case 8:;
 		break;
@@ -64,8 +67,8 @@ void mainMenu()
 {
 	system("cls");
 	printf("Menu:\n\n");
-	printf("1.    A tua Pontuacao\n");
-	printf("2.    Pontuaoes Globais\n");
+	printf("1.    A tua pontuação\n");
+	printf("2.    Pontuações globais\n");
 	printf("3.    Adivinha o numero.\n");
 	printf("4.    Adivinha a carta.\n");
 	printf("5.    Vinte e um.\n");

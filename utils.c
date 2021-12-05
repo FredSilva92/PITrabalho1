@@ -13,6 +13,12 @@ void gameMenu() {
     printf("2. Ver pontuações\n");
 };
 
+void playAgainScreen() {
+	printf("Jogar outra vez?\n");
+	printf("1. Sim\n");
+	printf("2. Não\n");
+};
+
 void wrongOption() {
-	printf("Opção errada! Volte a tentar!");
+	printf("Opção errada! Volta a tentar!\n");
 }

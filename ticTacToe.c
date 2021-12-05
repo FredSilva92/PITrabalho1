@@ -2,15 +2,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
+#ifdef _WIN32
+	#include<conio.h>
+#endif
 #include "games.h"
 #include "files.h"
 #include "utils.h"
 
-char square[10] = { 'o', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+char square[10];
 
-int startTictacToe(char playerName[]);
+int startTicTacToe(char playerName[], char player2Name[]);
 int checkwin();
 void boardTtt();
+void initSquares();
+
+int player1Points = 0, player2Points = 0;
 
 void ticTacToe(char playerName[]) {
     char choice = ' ';
@@ -22,27 +29,40 @@ void ticTacToe(char playerName[]) {
         scanf(" %c", &choice);
         
         if (choice == '1') {
-            startTictacToe(playerName);
+            char player2Name[NAMES_SIZE];            
+            printf("Nome do jogador 2: \n");
+            scanf("%s", player2Name);
+            startTicTacToe(playerName, player2Name);
             break;
         } else if (choice == '2') {
             setGamePoints(TIC_TAC_TOE);
             break;
-        }
-
-        wrongOption();
+        } else {
+			wrongOption();
+		}
     }  
 };
 
-int startTictacToe(char playerName[]) {
+int startTicTacToe(char playerName[], char player2Name[]) {
     int player = 1, i, choice;
 
     char mark;
+    char nameToDisplay[NAMES_SIZE];
+
+    initSquares();
+
     do
     {
         boardTtt();
         player = (player % 2) ? 1 : 2;
 
-        printf("Player %d, enter a number:  ", player);
+        if (player == 1) {
+            strcpy(nameToDisplay, playerName);
+        } else {
+            strcpy(nameToDisplay, player2Name);
+        }
+
+        printf("%s, insere um número:  ", nameToDisplay);
         scanf(" %d", &choice);
 
         mark = (player == 1) ? 'X' : 'O';
@@ -86,27 +106,49 @@ int startTictacToe(char playerName[]) {
         player++;
 
     if (i == 1){
-        printf("==>\aPlayer %d win ", --player);
-        int playAgain;
-
-        printf("Jogar outra vez?");
-        printf("1. Sim");
-        printf("2. Não");
-
-        if (playAgain == 1) {
-
-        } else {
-            //saveFile(winnerName, CONNECTED4, winner->score);
-        }
-
-        
+        printf("==>\aPlayer %d win ", --player);        
     } else
         printf("==>\aGame draw");
     } while (i == -1);
 
     boardTtt();
 
+    if (player == 1) {
+        player1Points++;
+        player2Points-=2;
 
+        if (player2Points < 0) {
+            player2Points = 0;
+        }
+    } else {
+        player1Points-=2;
+        player2Points++;
+
+        if (player1Points < 0) {
+            player1Points = 0;
+        }
+    }
+
+    char playAgain;
+
+    while (1)
+    {
+        playAgainScreen();
+
+        scanf(" %c", &playAgain);
+
+        if (playAgain == '1') {
+            startTicTacToe(playerName, player2Name);
+            break;
+        } else if(playAgain == '2') {
+            saveFile(playerName, TIC_TAC_TOE, player1Points);
+            saveFile(player2Name, TIC_TAC_TOE, player2Points);
+            printf("Obrigado por jogares o jogo do galo :)\n");
+            break;
+        }
+
+        wrongOption();
+    }
 
     return 0;
 }
@@ -168,4 +210,17 @@ void boardTtt()
     printf("  %c  |  %c  |  %c \n", square[7], square[8], square[9]);
 
     printf("     |     |     \n\n");
+}
+
+void initSquares() {
+    square[0] = '0';
+    square[1] = '1';
+    square[2] = '2';
+    square[3] = '3';
+    square[4] = '4';
+    square[5] = '5';
+    square[6] = '6';
+    square[7] = '7';
+    square[8] = '8';
+    square[9] = '9';
 }

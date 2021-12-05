@@ -1,11 +1,14 @@
 #include<stdio.h>
-#include<conio.h>
+#include<stdlib.h>
 #include<string.h>
 #include<time.h>
+#ifdef _WIN32
+	#include<conio.h>
+#endif
+#include "games.h"
+#include "utils.h"
+#include "files.h"
 
-
-
-void menuOne(); 
 void singlePlayerGame(); 
 void playerChoice(); 
 void defineStrength(); 
@@ -21,6 +24,7 @@ void dealerHit();
 int menuScreen = 0, cardsDrawn = 0;
 int playerOnePoints = 0, dealerPoints = 0, activePlayer = 0;
 int dealerCardRevealed = 0;
+int pointsToSave = 0;
 
 struct deck { //structure to initilise deck of cards easier
 	char* strength;
@@ -28,14 +32,40 @@ struct deck { //structure to initilise deck of cards easier
 };
 
 typedef struct deck Deck;
-//filled arrays which will be used to initilise deck
+
 char* strength[13] = { "As", "Dois", "Tres", "Quatro", "Cinco", "Seis", "Sete", "Oito", "Nove", "Dez", "Valete", "Dama", "Rei" };
 char suit[4][20] = { "Paus", "Ouros", "Copas", "Espadas" };
+char playerNameToSave[NAMES_SIZE];
 
-void randomiseDeck(Deck[]); //used to shuffle the deck
+void randomiseDeck(Deck[]);
 Deck deck[52] = { "", "" }; 
 
-void main() {
+void startBlackjack();
+
+void blackjack(char playerName[]) {
+	char choice = ' ';
+	strcpy(playerNameToSave, playerName);
+
+    while(1) {
+
+        gameMenu();
+
+        scanf(" %c", &choice);
+        
+        if (choice == '1') {
+            startBlackjack();
+            break;
+        } else if (choice == '2') {
+            setGamePoints(BLACKJACK);
+            break;
+        } else {
+			wrongOption();
+		}
+        
+    } 
+}
+
+void startBlackjack() {
 	system("cls"); 
     printf("# # # # # # # # # # # # # # # # # # # #\n");
     printf("#                                     #\n");
@@ -47,39 +77,12 @@ void main() {
 	initialiseDeck(); //making deck
 	randomiseDeck(deck); //shuffling
 
-	menuOne(); //from this function everything else is called from
+	singlePlayerGame(); //from this function everything else is called from
 
 }
 
-void menuOne()
-{
-
-	printf("1:              JOGAR\n");
-	printf("2:         Voltar ao Menu\n"); 
-
-	int option;
-	scanf("%d", &option);
-
-	switch (option)
-	{
-	case 1: 
-		singlePlayerGame();
-		break;
-
-	case 2:
-		//Codigo pra voltar ao menu
-		break;
-
-	default:
-		printf("\n");
-		menuOne();
-		break;
-	}
-}
-
-void singlePlayerGame()
-{
-system("cls"); 
+void singlePlayerGame() {
+	system("clear || cls"); 
 
 	cardsDrawn = 0;
 	playerOnePoints = 0;
@@ -123,11 +126,16 @@ system("cls");
 		restartSinglePlayerGame();
 	}
 	else if (dealerPoints == 21) {
-		printf("Dealer mostra Vinte e Um e o JOGADOR perde!\n");
+		pointsToSave--;
+		if (pointsToSave < 0) {
+			pointsToSave = 0;
+		}
+		printf("Dealer mostra Vinte e Um, %s perde!\n", playerNameToSave);
 		restartSinglePlayerGame();
 	}
 	else if (playerOnePoints == 21) {
-		printf("   JOGADOR Ganha com Vinte e Um\n");
+		pointsToSave++;
+		printf("%s ganha com Vinte e Um\n", playerNameToSave);
 		restartSinglePlayerGame();
 	}
 
@@ -249,20 +257,24 @@ void restartSinglePlayerGame()
 	int option;
 
 	randomiseDeck(deck);
-	printf("\n1.         Jogar Novamente\n");
-	printf("2.         Menu Principal\n");
-	scanf("%d", &option);
 
-	switch (option)
-	{
-	case 1:
-		singlePlayerGame();
-		break;
-	case 2: 
-		menuOne();
-	default:
-		singlePlayerGame();
-		break;
+
+
+	while(1) {
+		playAgainScreen();
+		scanf(" %d", &option);
+
+		if (option == 1) {
+			singlePlayerGame();
+			break;
+		}
+		else if (option == 2) { 
+			saveFile(playerNameToSave, BLACKJACK, playerOnePoints);
+			printf("\nObrigado por teres jogado o Vinte e Um :)");
+			break;
+		}
+
+		wrongOption();
 	}
 }
 
@@ -282,16 +294,19 @@ void dealerTurn()
 	
 
 	else if (dealerPoints > 21) {
-			printf("Dealer rebentou, JOGADOR ganha com : %d pontos!\n     ............................\n", playerOnePoints);
+			pointsToSave++;
+			printf("Dealer rebentou, %s ganha com : %d pontos!\n     ............................\n", playerNameToSave, playerOnePoints);
 			restartSinglePlayerGame();
-					//ADICIONAR PONTOS
 
 	}
 	else if (dealerPoints > playerOnePoints){
+			pointsToSave--;
+			if (pointsToSave < 0) {
+				pointsToSave = 0;
+			}
+
 			printf("     Dealer ganha com: %d pontos!\n     ............................\n", dealerPoints);
 			restartSinglePlayerGame();
-						//RETIRAR PONTOS
-
 	}
 	
 }

@@ -113,9 +113,6 @@ void startConnected4(char playerName[]) {
             }
         }        
     }
-
-    free(currentPlayer);
-    free(players);
 }
 
 void boardC4() {
@@ -448,14 +445,6 @@ void createPlayers(char playerName[], struct Player* players, char gameMode) {
         scanf("%s", player2Name);
     }
 
-    /*player1->name = playerName;
-    player1->disk = DISK1;
-    player1->score = 0;
-
-    player2->name = player2Name;
-    player2->disk = DISK2;
-    player2->score = 0;*/
-
     players[0].disk = malloc(sizeof(char));
     players[0].score = malloc(sizeof(int));
 
@@ -494,9 +483,7 @@ void endGame(struct Player* winner, struct Player players[], int *playAgain) {
     pressEnter();
 
     while(1) {
-        printf("Jogar outra vez?\n");
-        printf("1. Sim\n");
-        printf("2. Não\n");
+        playAgainScreen();
         scanf(" %d", playAgain);
 
         if (*playAgain == 1 || *playAgain == 2) {
